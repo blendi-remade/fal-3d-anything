@@ -152,8 +152,9 @@ function showResultSection(result, selectedImage) {
     $('#resultPreview').innerHTML = `<p style="padding:20px;text-align:center;color:var(--text-muted)">3D model generated!</p>`;
   }
 
-  // Store result for button handlers
+  // Store result and source info for button handlers
   state.currentResult = result;
+  state.selectedImage = selectedImage;
 }
 
 function showEmptySection() {
@@ -180,7 +181,8 @@ function bindEvents() {
     const viewerUrl = chrome.runtime.getURL('viewer/viewer.html');
     const glb = encodeURIComponent(state.currentResult.glbUrl);
     const thumb = state.currentResult.thumbnailUrl ? `&thumb=${encodeURIComponent(state.currentResult.thumbnailUrl)}` : '';
-    window.open(`${viewerUrl}?glb=${glb}${thumb}&mode=fullscreen`, '_blank');
+    const title = state.selectedImage?.pageTitle ? `&title=${encodeURIComponent(state.selectedImage.pageTitle)}` : '';
+    window.open(`${viewerUrl}?glb=${glb}${thumb}${title}&mode=fullscreen`, '_blank');
   });
 
   // Download GLB

@@ -197,12 +197,66 @@ body.controls-visible .viewer-controls {
   max-width: 300px;
 }
 
+/* ── Museum Placard ── */
+
+.museum-placard {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  z-index: 10;
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  pointer-events: none;
+}
+
+.museum-placard.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.placard-line {
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), rgba(139, 92, 246, 0.1));
+  border-radius: 1px;
+}
+
+.placard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.placard-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0.85;
+  letter-spacing: 0.01em;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.placard-subtitle {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
 /* ── Inline mode ── */
 
 body.inline-mode {
   background: transparent;
 }
 
-body.inline-mode .viewer-controls {
+body.inline-mode .viewer-controls,
+body.inline-mode .museum-placard {
   display: none !important;
 }

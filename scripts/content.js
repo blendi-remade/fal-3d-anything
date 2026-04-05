@@ -130,7 +130,8 @@
     // Build viewer URL with params
     const glbParam = encodeURIComponent(result.glbUrl);
     const thumbParam = result.thumbnailUrl ? `&thumb=${encodeURIComponent(result.thumbnailUrl)}` : '';
-    const iframeSrc = `${viewerBaseUrl}?glb=${glbParam}${thumbParam}&mode=inline`;
+    const titleParam = `&title=${encodeURIComponent(document.title)}`;
+    const iframeSrc = `${viewerBaseUrl}?glb=${glbParam}${thumbParam}${titleParam}&mode=inline`;
 
     // Create viewer container
     const viewerContainer = document.createElement('div');
@@ -164,7 +165,7 @@
     // Fullscreen button
     viewerContainer.querySelector('.h3d-fullscreen-btn').addEventListener('click', (e) => {
       e.stopPropagation();
-      const fullUrl = `${viewerBaseUrl}?glb=${glbParam}${thumbParam}&mode=fullscreen`;
+      const fullUrl = `${viewerBaseUrl}?glb=${glbParam}${thumbParam}${titleParam}&mode=fullscreen`;
       window.open(fullUrl, '_blank');
     });
 
