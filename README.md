@@ -1,6 +1,6 @@
 # 3D Web
 
-A Chrome extension that transforms any image on the web into an interactive 3D model. Right-click an image, and watch it come to life as a museum-quality 3D exhibit you can rotate, zoom, and explore.
+A Chrome extension, powered by [fal.ai](https://fal.ai), that transforms any image on the web into an interactive 3D model. Right-click an image, and watch it come to life as a museum-quality 3D exhibit you can rotate, zoom, and explore.
 
 Turn any webpage into a gallery.
 

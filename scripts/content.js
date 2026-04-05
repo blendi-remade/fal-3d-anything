@@ -9,10 +9,82 @@
   // Viewer base URL (fetched from background)
   let viewerBaseUrl = null;
 
-  // Get the viewer URL from the extension
+  // Get the viewer URL from the extension, then restore any saved conversions
   chrome.runtime.sendMessage({ action: 'getViewerUrl' }, (response) => {
-    if (response?.viewerUrl) viewerBaseUrl = response.viewerUrl;
+    if (response?.viewerUrl) {
+      viewerBaseUrl = response.viewerUrl;
+      restoreSavedConversions();
+    }
   });
+
+  // ── Persistence ──
+
+  function getPageKey() {
+    return window.location.href.split('#')[0]; // strip hash
+  }
+
+  function saveConversion(imageUrl, result) {
+    const pageKey = getPageKey();
+    chrome.storage.local.get('h3d_conversions', (data) => {
+      const conversions = data.h3d_conversions || {};
+      if (!conversions[pageKey]) conversions[pageKey] = [];
+
+      // Don't duplicate
+      const exists = conversions[pageKey].some(c => c.imageUrl === imageUrl);
+      if (!exists) {
+        conversions[pageKey].push({ imageUrl, result });
+      }
+
+      chrome.storage.local.set({ h3d_conversions: conversions });
+    });
+  }
+
+  function removeConversion(imageUrl) {
+    const pageKey = getPageKey();
+    chrome.storage.local.get('h3d_conversions', (data) => {
+      const conversions = data.h3d_conversions || {};
+      if (conversions[pageKey]) {
+        conversions[pageKey] = conversions[pageKey].filter(c => c.imageUrl !== imageUrl);
+        if (conversions[pageKey].length === 0) delete conversions[pageKey];
+        chrome.storage.local.set({ h3d_conversions: conversions });
+      }
+    });
+  }
+
+  function restoreSavedConversions() {
+    const pageKey = getPageKey();
+    chrome.storage.local.get('h3d_conversions', (data) => {
+      const conversions = data.h3d_conversions || {};
+      const pageConversions = conversions[pageKey];
+      if (!pageConversions || pageConversions.length === 0) return;
+
+      for (const { imageUrl, result } of pageConversions) {
+        const img = findImageElement(imageUrl);
+        if (!img) continue;
+
+        // Create a tracked entry so replaceWithViewer can work
+        const width = Math.max(img.offsetWidth, 200);
+        const height = Math.max(img.offsetHeight, 200);
+
+        const container = document.createElement('div');
+        container.className = 'h3d-overlay-container';
+        container.style.width = width + 'px';
+        container.style.height = height + 'px';
+
+        img.style.display = 'none';
+        img.parentElement.insertBefore(container, img.nextSibling);
+
+        trackedImages.set(imageUrl, {
+          originalImg: img,
+          container,
+          width,
+          height,
+        });
+
+        replaceWithViewer(imageUrl, result);
+      }
+    });
+  }
 
   // ── Track right-clicked images ──
 
@@ -182,6 +254,9 @@
       container: viewerContainer,
       result,
     });
+
+    // Persist this conversion
+    saveConversion(imageUrl, result);
   }
 
   // ── Restore original image ──
@@ -193,6 +268,9 @@
     tracked.container.remove();
     tracked.originalImg.style.display = '';
     trackedImages.delete(imageUrl);
+
+    // Remove from persistence
+    removeConversion(imageUrl);
   }
 
   // ── Error handling ──
