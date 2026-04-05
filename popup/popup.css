@@ -54,14 +54,14 @@ a:hover {
 }
 
 .logo {
-  width: 36px;
-  height: 36px;
-  perspective: 80px;
+  width: 26px;
+  height: 26px;
+  perspective: 60px;
 }
 
 .logo-cube {
-  width: 36px;
-  height: 36px;
+  width: 26px;
+  height: 26px;
   position: relative;
   transform-style: preserve-3d;
   animation: logo-spin 6s infinite linear;
@@ -69,19 +69,19 @@ a:hover {
 
 .cube-face {
   position: absolute;
-  width: 36px;
-  height: 36px;
-  border: 2px solid var(--accent);
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid var(--accent);
   background: var(--accent-dim);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
-.front  { transform: translateZ(18px); }
-.back   { transform: rotateY(180deg) translateZ(18px); }
-.left   { transform: rotateY(-90deg) translateZ(18px); }
-.right  { transform: rotateY(90deg) translateZ(18px); }
-.top    { transform: rotateX(90deg) translateZ(18px); }
-.bottom { transform: rotateX(-90deg) translateZ(18px); }
+.front  { transform: translateZ(13px); }
+.back   { transform: rotateY(180deg) translateZ(13px); }
+.left   { transform: rotateY(-90deg) translateZ(13px); }
+.right  { transform: rotateY(90deg) translateZ(13px); }
+.top    { transform: rotateX(90deg) translateZ(13px); }
+.bottom { transform: rotateX(-90deg) translateZ(13px); }
 
 @keyframes logo-spin {
   from { transform: rotateX(-20deg) rotateY(0deg); }
@@ -284,17 +284,22 @@ a:hover {
   flex-shrink: 0;
 }
 
-.mini-spinner {
-  width: 24px;
-  height: 24px;
-  border: 2.5px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+.fal-logo-spinner {
+  width: 28px;
+  height: 28px;
+  animation: fal-spin 4s ease-in-out infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+@keyframes fal-spin {
+  0%   { transform: rotate(0deg);    fill: #5718c0; }
+  20%  { transform: rotate(360deg);  fill: #ab77ff; }
+  25%  { transform: rotate(360deg);  fill: #e366af; }
+  45%  { transform: rotate(720deg);  fill: #ec0648; }
+  50%  { transform: rotate(720deg);  fill: #ab77ff; }
+  70%  { transform: rotate(1080deg); fill: #38acc6; }
+  75%  { transform: rotate(1080deg); fill: #3fb5fe; }
+  95%  { transform: rotate(1440deg); fill: #115ef3; }
+  100% { transform: rotate(1440deg); fill: #5718c0; }
 }
 
 .status-title {

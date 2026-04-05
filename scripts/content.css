@@ -36,53 +36,35 @@
   font-weight: 500;
   color: #c4b5fd;
   letter-spacing: 0.02em;
+  line-height: 1;
 }
 
 .h3d-loading-subtext {
-  margin-top: 6px;
+  margin-top: 8px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   font-size: 12px;
   color: #64748b;
+  line-height: 1;
 }
 
-/* 3D spinning cube */
+/* Fal.ai spinner */
 
-.h3d-spinner {
-  perspective: 120px;
-  width: 40px;
-  height: 40px;
+.h3d-fal-spinner {
+  width: 44px;
+  height: 44px;
+  animation: h3d-fal-spin 4s ease-in-out infinite;
 }
 
-.h3d-cube {
-  width: 40px;
-  height: 40px;
-  position: relative;
-  transform-style: preserve-3d;
-  animation: h3d-spin 2.5s infinite ease-in-out;
-}
-
-.h3d-face {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  border: 2px solid rgba(139, 92, 246, 0.5);
-  background: rgba(139, 92, 246, 0.08);
-  backdrop-filter: blur(4px);
-}
-
-.h3d-front  { transform: translateZ(20px); }
-.h3d-back   { transform: rotateY(180deg) translateZ(20px); }
-.h3d-left   { transform: rotateY(-90deg) translateZ(20px); }
-.h3d-right  { transform: rotateY(90deg) translateZ(20px); }
-.h3d-top    { transform: rotateX(90deg) translateZ(20px); }
-.h3d-bottom { transform: rotateX(-90deg) translateZ(20px); }
-
-@keyframes h3d-spin {
-  0%   { transform: rotateX(0deg) rotateY(0deg); }
-  25%  { transform: rotateX(90deg) rotateY(90deg); }
-  50%  { transform: rotateX(180deg) rotateY(180deg); }
-  75%  { transform: rotateX(270deg) rotateY(270deg); }
-  100% { transform: rotateX(360deg) rotateY(360deg); }
+@keyframes h3d-fal-spin {
+  0%   { transform: rotate(0deg);    fill: #5718c0; }
+  20%  { transform: rotate(360deg);  fill: #ab77ff; }
+  25%  { transform: rotate(360deg);  fill: #e366af; }
+  45%  { transform: rotate(720deg);  fill: #ec0648; }
+  50%  { transform: rotate(720deg);  fill: #ab77ff; }
+  70%  { transform: rotate(1080deg); fill: #38acc6; }
+  75%  { transform: rotate(1080deg); fill: #3fb5fe; }
+  95%  { transform: rotate(1440deg); fill: #115ef3; }
+  100% { transform: rotate(1440deg); fill: #5718c0; }
 }
 
 /* Viewer iframe */

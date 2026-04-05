@@ -63,43 +63,23 @@ model-viewer {
   z-index: 20;
 }
 
-.loading-cube-wrap {
-  perspective: 100px;
-  width: 50px;
-  height: 50px;
+.fal-spinner {
+  width: 52px;
+  height: 52px;
   margin-bottom: 20px;
+  animation: fal-spin 4s ease-in-out infinite;
 }
 
-.loading-cube {
-  width: 50px;
-  height: 50px;
-  position: relative;
-  transform-style: preserve-3d;
-  animation: lc-spin 2.5s infinite ease-in-out;
-}
-
-.lc-face {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  border: 2px solid var(--accent);
-  background: var(--accent-dim);
-  border-radius: 4px;
-}
-
-.lc-front  { transform: translateZ(25px); }
-.lc-back   { transform: rotateY(180deg) translateZ(25px); }
-.lc-left   { transform: rotateY(-90deg) translateZ(25px); }
-.lc-right  { transform: rotateY(90deg) translateZ(25px); }
-.lc-top    { transform: rotateX(90deg) translateZ(25px); }
-.lc-bottom { transform: rotateX(-90deg) translateZ(25px); }
-
-@keyframes lc-spin {
-  0%   { transform: rotateX(0deg) rotateY(0deg); }
-  25%  { transform: rotateX(90deg) rotateY(90deg); }
-  50%  { transform: rotateX(180deg) rotateY(180deg); }
-  75%  { transform: rotateX(270deg) rotateY(270deg); }
-  100% { transform: rotateX(360deg) rotateY(360deg); }
+@keyframes fal-spin {
+  0%   { transform: rotate(0deg);    fill: #5718c0; }
+  20%  { transform: rotate(360deg);  fill: #ab77ff; }
+  25%  { transform: rotate(360deg);  fill: #e366af; }
+  45%  { transform: rotate(720deg);  fill: #ec0648; }
+  50%  { transform: rotate(720deg);  fill: #ab77ff; }
+  70%  { transform: rotate(1080deg); fill: #38acc6; }
+  75%  { transform: rotate(1080deg); fill: #3fb5fe; }
+  95%  { transform: rotate(1440deg); fill: #115ef3; }
+  100% { transform: rotate(1440deg); fill: #5718c0; }
 }
 
 .loading-text {
