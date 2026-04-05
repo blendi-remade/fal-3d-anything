@@ -15,6 +15,7 @@ Turn any webpage into a gallery.
 4. Click fullscreen for the museum experience - complete with gallery lighting, soft shadows, and a cinematic reveal
 
 <!-- Inline 3D viewer on webpage screenshot -->
+<img width="1837" height="983" alt="Screenshot 2026-04-05 025136" src="https://github.com/user-attachments/assets/0f8c9b0c-7b14-42ee-87c8-77d2ba4cc19e" />
 
 ## The viewer
 
