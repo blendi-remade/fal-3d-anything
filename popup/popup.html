@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Web</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-brand">
+      <div class="logo">
+        <div class="logo-cube">
+          <div class="cube-face front"></div>
+          <div class="cube-face back"></div>
+          <div class="cube-face left"></div>
+          <div class="cube-face right"></div>
+          <div class="cube-face top"></div>
+          <div class="cube-face bottom"></div>
+        </div>
+      </div>
+      <div>
+        <h1 class="title">3D Web</h1>
+        <p class="subtitle">powered by fal.ai &middot; Hunyuan 3D</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- API Key Section -->
+  <section class="card api-card">
+    <button class="card-toggle" id="apiToggle">
+      <span class="card-toggle-label">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M10.5 1.5a2.5 2.5 0 0 1 1.768 4.268L13.5 7H12v1.5h-1.5V10h-1.5v1.5H7.5L6.232 10.232A2.5 2.5 0 1 1 10.5 1.5zM10 4a1 1 0 1 0 2 0 1 1 0 0 0-2 0z" fill="currentColor"/>
+        </svg>
+        API Configuration
+      </span>
+      <span class="api-status" id="apiStatus">Not configured</span>
+    </button>
+    <div class="card-body" id="apiBody">
+      <div class="input-group">
+        <div class="input-wrapper">
+          <input
+            type="password"
+            id="apiKeyInput"
+            class="input"
+            placeholder="Enter your fal.ai API key"
+            spellcheck="false"
+            autocomplete="off"
+          />
+          <button class="input-icon-btn" id="toggleVisibility" title="Show/hide key">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" id="eyeIcon">
+              <path d="M8 3C4.5 3 1.7 5.1 0.5 8c1.2 2.9 4 5 7.5 5s6.3-2.1 7.5-5c-1.2-2.9-4-5-7.5-5z" stroke="currentColor" stroke-width="1.2" fill="none"/>
+              <circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+            </svg>
+          </button>
+        </div>
+        <button class="btn btn-primary" id="saveKeyBtn">Save Key</button>
+      </div>
+      <p class="help-text">
+        Get your API key from
+        <a href="https://fal.ai/dashboard/keys" target="_blank" rel="noopener">fal.ai/dashboard/keys</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Status Section -->
+  <section class="card" id="statusSection" style="display: none;">
+    <div class="status-content">
+      <div class="status-icon" id="statusIcon">
+        <div class="mini-spinner"></div>
+      </div>
+      <div class="status-info">
+        <div class="status-title" id="statusTitle">Generating 3D model...</div>
+        <div class="status-detail" id="statusDetail">This may take up to a minute</div>
+      </div>
+    </div>
+    <div class="status-image" id="statusImage"></div>
+  </section>
+
+  <!-- Result Section -->
+  <section class="card" id="resultSection" style="display: none;">
+    <div class="result-preview" id="resultPreview"></div>
+    <div class="result-actions">
+      <button class="btn btn-primary btn-block" id="openViewerBtn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Open 3D Viewer
+      </button>
+      <button class="btn btn-secondary" id="downloadBtn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 2v8m0 0l-3-3m3 3l3-3M2 12v2h12v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Download .glb
+      </button>
+    </div>
+  </section>
+
+  <!-- Empty State -->
+  <section class="card empty-state" id="emptySection">
+    <div class="empty-icon">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <rect x="6" y="6" width="36" height="36" rx="4" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3"/>
+        <path d="M18 30l4-8 4 4 4-6 6 10H12z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none"/>
+        <circle cx="18" cy="18" r="3" stroke="currentColor" stroke-width="2" fill="none"/>
+      </svg>
+    </div>
+    <p class="empty-title">Right-click any image</p>
+    <p class="empty-subtitle">Select <strong>"Transform to 3D"</strong> from the context menu to convert any image into an interactive 3D model</p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span>Built with Hunyuan 3D v3.1 on fal.ai</span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+/* 3D Web — Content Script Styles */
+
+.h3d-overlay-container,
+.h3d-viewer-container {
+  position: relative;
+  display: inline-block;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0a0a0f;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.h3d-viewer-container:hover {
+  box-shadow: 0 4px 32px rgba(99, 102, 241, 0.2), 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading overlay */
+
+.h3d-loading-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f0f1a 100%);
+  color: #e2e8f0;
+}
+
+.h3d-loading-text {
+  margin-top: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #c4b5fd;
+  letter-spacing: 0.02em;
+}
+
+.h3d-loading-subtext {
+  margin-top: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* 3D spinning cube */
+
+.h3d-spinner {
+  perspective: 120px;
+  width: 40px;
+  height: 40px;
+}
+
+.h3d-cube {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: h3d-spin 2.5s infinite ease-in-out;
+}
+
+.h3d-face {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(139, 92, 246, 0.5);
+  background: rgba(139, 92, 246, 0.08);
+  backdrop-filter: blur(4px);
+}
+
+.h3d-front  { transform: translateZ(20px); }
+.h3d-back   { transform: rotateY(180deg) translateZ(20px); }
+.h3d-left   { transform: rotateY(-90deg) translateZ(20px); }
+.h3d-right  { transform: rotateY(90deg) translateZ(20px); }
+.h3d-top    { transform: rotateX(90deg) translateZ(20px); }
+.h3d-bottom { transform: rotateX(-90deg) translateZ(20px); }
+
+@keyframes h3d-spin {
+  0%   { transform: rotateX(0deg) rotateY(0deg); }
+  25%  { transform: rotateX(90deg) rotateY(90deg); }
+  50%  { transform: rotateX(180deg) rotateY(180deg); }
+  75%  { transform: rotateX(270deg) rotateY(270deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+/* Viewer iframe */
+
+.h3d-viewer-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* Viewer controls */
+
+.h3d-viewer-controls {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 10;
+}
+
+.h3d-viewer-container:hover .h3d-viewer-controls {
+  opacity: 1;
+}
+
+.h3d-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(15, 15, 26, 0.85);
+  color: #e2e8f0;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s, transform 0.15s;
+}
+
+.h3d-btn:hover {
+  background: rgba(139, 92, 246, 0.6);
+  transform: scale(1.08);
+}
+
+.h3d-badge {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #c4b5fd;
+  background: rgba(15, 15, 26, 0.85);
+  padding: 4px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(8px);
+}
+
+/* Error overlay */
+
+.h3d-error-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  background: linear-gradient(135deg, #0f0f1a 0%, #1a1020 50%, #0f0f1a 100%);
+  color: #e2e8f0;
+  padding: 20px;
+  text-align: center;
+}
+
+.h3d-error-icon {
+  margin-bottom: 12px;
+}
+
+.h3d-error-text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  color: #fca5a5;
+  max-width: 280px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.h3d-retry-btn {
+  width: auto !important;
+  padding: 8px 16px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #e2e8f0;
+  border-radius: 8px;
+}

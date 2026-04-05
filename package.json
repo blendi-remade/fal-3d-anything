@@ -1,0 +1,13 @@
+{
+  "name": "3d-web-extension",
+  "version": "1.0.0",
+  "description": "Chrome extension to transform any image into 3D using Hunyuan 3D v3.1",
+  "private": true,
+  "scripts": {
+    "build": "node build.js",
+    "postinstall": "node build.js"
+  },
+  "dependencies": {
+    "@google/model-viewer": "^4.0.0"
+  }
+}
