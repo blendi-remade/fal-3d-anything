@@ -51,6 +51,8 @@
     });
   }
 
+  let isRestoring = false;
+
   function restoreSavedConversions() {
     const pageKey = getPageKey();
     chrome.storage.local.get('h3d_conversions', (data) => {
@@ -58,31 +60,49 @@
       const pageConversions = conversions[pageKey];
       if (!pageConversions || pageConversions.length === 0) return;
 
-      for (const { imageUrl, result } of pageConversions) {
-        const img = findImageElement(imageUrl);
-        if (!img) continue;
+      isRestoring = true;
 
-        // Create a tracked entry so replaceWithViewer can work
-        const width = Math.max(img.offsetWidth, 200);
-        const height = Math.max(img.offsetHeight, 200);
+      function tryRestore() {
+        let allFound = true;
+        for (const { imageUrl, result } of pageConversions) {
+          // Skip if already restored
+          if (trackedImages.has(imageUrl)) continue;
 
-        const container = document.createElement('div');
-        container.className = 'h3d-overlay-container';
-        container.style.width = width + 'px';
-        container.style.height = height + 'px';
+          const img = findImageElement(imageUrl);
+          if (!img) { allFound = false; continue; }
 
-        img.style.display = 'none';
-        img.parentElement.insertBefore(container, img.nextSibling);
+          const width = Math.max(img.offsetWidth, 200);
+          const height = Math.max(img.offsetHeight, 200);
 
-        trackedImages.set(imageUrl, {
-          originalImg: img,
-          container,
-          width,
-          height,
-        });
+          const container = document.createElement('div');
+          container.className = 'h3d-overlay-container';
+          container.style.width = width + 'px';
+          container.style.height = height + 'px';
 
-        replaceWithViewer(imageUrl, result);
+          img.style.display = 'none';
+          img.parentElement.insertBefore(container, img.nextSibling);
+
+          trackedImages.set(imageUrl, {
+            originalImg: img,
+            container,
+            width,
+            height,
+          });
+
+          replaceWithViewer(imageUrl, result);
+        }
+
+        // If some images weren't found yet (lazy-loaded), retry a few times
+        if (!allFound && restoreRetries < 5) {
+          restoreRetries++;
+          setTimeout(tryRestore, 1000);
+        } else {
+          isRestoring = false;
+        }
       }
+
+      let restoreRetries = 0;
+      tryRestore();
     });
   }
 
@@ -211,6 +231,9 @@
     viewerContainer.style.width = width + 'px';
     viewerContainer.style.height = Math.max(height, 300) + 'px';
 
+    // Block ancestor <a> tag clicks (e.g. Wikipedia wraps images in links)
+    viewerContainer.addEventListener('click', (e) => { e.preventDefault(); });
+
     viewerContainer.innerHTML = `
       <iframe
         class="h3d-viewer-iframe"
@@ -234,8 +257,9 @@
       </div>
     `;
 
-    // Fullscreen button
+    // Fullscreen button — preventDefault stops ancestor <a> tags from navigating
     viewerContainer.querySelector('.h3d-fullscreen-btn').addEventListener('click', (e) => {
+      e.preventDefault();
       e.stopPropagation();
       const fullUrl = `${viewerBaseUrl}?glb=${glbParam}${thumbParam}${titleParam}&mode=fullscreen`;
       window.open(fullUrl, '_blank');
@@ -243,6 +267,7 @@
 
     // Restore button
     viewerContainer.querySelector('.h3d-restore-btn').addEventListener('click', (e) => {
+      e.preventDefault();
       e.stopPropagation();
       restoreImage(imageUrl);
     });
@@ -255,8 +280,10 @@
       result,
     });
 
-    // Persist this conversion
-    saveConversion(imageUrl, result);
+    // Persist this conversion (skip if we're restoring from storage)
+    if (!isRestoring) {
+      saveConversion(imageUrl, result);
+    }
   }
 
   // ── Restore original image ──
