@@ -5,6 +5,7 @@ A Chrome extension, powered by [fal.ai](https://fal.ai), that transforms any ima
 Turn any webpage into a gallery.
 
 <!-- Full 3D viewer screenshot -->
+<img width="2845" height="1469" alt="Screenshot 2026-04-05 023613" src="https://github.com/user-attachments/assets/bfd12164-b4ff-47ad-841c-8142e63ad114" />
 
 ## How it works
 
