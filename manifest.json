@@ -42,7 +42,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["viewer/viewer.html", "viewer/viewer.js", "viewer/viewer.css", "libs/*"],
+      "resources": ["viewer/viewer.html", "viewer/viewer.css", "libs/*"],
       "matches": ["<all_urls>"]
     }
   ]

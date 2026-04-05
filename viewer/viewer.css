@@ -1,4 +1,6 @@
-/* 3D Web — Viewer Styles */
+/* ═══════════════════════════════════════════════════════════════════
+   3D Web — Museum Viewer Styles
+   ═══════════════════════════════════════════════════════════════════ */
 
 * {
   margin: 0;
@@ -9,7 +11,7 @@
 :root {
   --accent: #8b5cf6;
   --accent-dim: rgba(139, 92, 246, 0.15);
-  --bg: #0a0a0f;
+  --bg: #141418;
   --text: #e2e8f0;
   --text-muted: #64748b;
 }
@@ -23,34 +25,21 @@ html, body {
   color: var(--text);
 }
 
-/* Model Viewer */
+/* ── Canvas ── */
 
-model-viewer {
+#canvasContainer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+#canvasContainer canvas {
+  display: block;
   width: 100%;
   height: 100%;
-  background: var(--bg);
-  --poster-color: var(--bg);
 }
 
-/* Progress bar */
-
-.progress-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), #a78bfa);
-  width: 0%;
-  transition: width 0.3s ease;
-}
-
-/* Loading Screen */
+/* ── Loading Screen ── */
 
 .loading-screen {
   position: absolute;
@@ -61,11 +50,12 @@ model-viewer {
   justify-content: center;
   background: var(--bg);
   z-index: 20;
+  transition: opacity 0.6s ease;
 }
 
 .fal-spinner {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   margin-bottom: 20px;
   animation: fal-spin 4s ease-in-out infinite;
 }
@@ -86,9 +76,28 @@ model-viewer {
   font-size: 14px;
   color: var(--text-muted);
   letter-spacing: 0.02em;
+  margin-bottom: 20px;
 }
 
-/* Controls overlay (fullscreen mode) */
+/* Progress bar */
+
+.progress-bar {
+  width: 200px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #a78bfa);
+  width: 0%;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+/* ── Controls overlay ── */
 
 .viewer-controls {
   position: absolute;
@@ -98,11 +107,11 @@ model-viewer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  background: linear-gradient(to bottom, rgba(10, 10, 15, 0.7), transparent);
+  padding: 16px 20px;
+  background: linear-gradient(to bottom, rgba(10, 10, 15, 0.75) 0%, rgba(10, 10, 15, 0.3) 70%, transparent 100%);
   z-index: 10;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
 }
 
 body:hover .viewer-controls,
@@ -113,13 +122,13 @@ body.controls-visible .viewer-controls {
 .controls-left, .controls-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .viewer-badge {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .badge-3d {
@@ -127,44 +136,47 @@ body.controls-visible .viewer-controls {
   font-weight: 700;
   color: var(--accent);
   background: var(--accent-dim);
-  padding: 3px 7px;
-  border-radius: 5px;
+  padding: 4px 8px;
+  border-radius: 6px;
   letter-spacing: 0.05em;
 }
 
 .badge-text {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text);
-  opacity: 0.8;
+  opacity: 0.75;
 }
 
 .ctrl-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: none;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 10px;
-  background: rgba(15, 15, 26, 0.7);
+  background: rgba(15, 15, 26, 0.65);
   color: var(--text);
   cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: background 0.2s, transform 0.15s;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background 0.2s, transform 0.15s, border-color 0.2s;
 }
 
 .ctrl-btn:hover {
-  background: rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.35);
+  border-color: rgba(139, 92, 246, 0.3);
   transform: scale(1.06);
 }
 
 .ctrl-btn.active {
-  background: rgba(139, 92, 246, 0.5);
+  background: rgba(139, 92, 246, 0.4);
+  border-color: rgba(139, 92, 246, 0.4);
   color: #c4b5fd;
 }
 
-/* Error Screen */
+/* ── Error Screen ── */
 
 .error-screen {
   position: absolute;
@@ -175,7 +187,7 @@ body.controls-visible .viewer-controls {
   justify-content: center;
   background: var(--bg);
   z-index: 20;
-  gap: 12px;
+  gap: 14px;
 }
 
 .error-text {
@@ -185,16 +197,12 @@ body.controls-visible .viewer-controls {
   max-width: 300px;
 }
 
-/* Inline mode adjustments */
+/* ── Inline mode ── */
 
 body.inline-mode {
   background: transparent;
 }
 
-body.inline-mode model-viewer {
-  border-radius: 0;
-}
-
 body.inline-mode .viewer-controls {
-  display: none;
+  display: none !important;
 }

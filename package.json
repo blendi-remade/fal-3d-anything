@@ -8,6 +8,9 @@
     "postinstall": "node build.js"
   },
   "dependencies": {
-    "@google/model-viewer": "^4.0.0"
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
   }
 }

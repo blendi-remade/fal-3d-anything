@@ -4,24 +4,34 @@ const path = require('path');
 const libsDir = path.join(__dirname, 'libs');
 if (!fs.existsSync(libsDir)) fs.mkdirSync(libsDir);
 
-// Copy model-viewer bundle to libs/
-const mvSrc = path.join(__dirname, 'node_modules', '@google', 'model-viewer', 'dist', 'model-viewer.min.js');
-const mvDest = path.join(libsDir, 'model-viewer.min.js');
+// ── Bundle Three.js viewer with esbuild ──
 
-if (fs.existsSync(mvSrc)) {
-  fs.copyFileSync(mvSrc, mvDest);
-  console.log('Copied model-viewer.min.js to libs/');
-} else {
-  console.warn('model-viewer not found in node_modules. Run npm install first.');
+async function bundleViewer() {
+  try {
+    const esbuild = require('esbuild');
+    await esbuild.build({
+      entryPoints: [path.join(__dirname, 'viewer', 'viewer.src.js')],
+      bundle: true,
+      minify: true,
+      format: 'iife',
+      outfile: path.join(libsDir, 'viewer.bundle.js'),
+      target: ['chrome110'],
+      sourcemap: false,
+      treeShaking: true,
+    });
+    console.log('Bundled Three.js viewer → libs/viewer.bundle.js');
+  } catch (e) {
+    console.error('Failed to bundle viewer:', e.message);
+    process.exit(1);
+  }
 }
 
-// Generate simple PNG icons if they don't exist
+// ── Generate placeholder PNG icons ──
+
 const iconsDir = path.join(__dirname, 'icons');
 if (!fs.existsSync(iconsDir)) fs.mkdirSync(iconsDir);
 
 function createPNG(size) {
-  // Minimal valid PNG: solid colored square
-  // PNG signature
   const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
 
   function crc32(buf) {
@@ -45,22 +55,16 @@ function createPNG(size) {
     return Buffer.concat([len, typeAndData, crc]);
   }
 
-  // IHDR
   const ihdr = Buffer.alloc(13);
   ihdr.writeUInt32BE(size, 0);
   ihdr.writeUInt32BE(size, 4);
-  ihdr[8] = 8; // bit depth
-  ihdr[9] = 2; // color type RGB
-  ihdr[10] = 0; // compression
-  ihdr[11] = 0; // filter
-  ihdr[12] = 0; // interlace
+  ihdr[8] = 8;
+  ihdr[9] = 2;
 
-  // IDAT - raw image data with zlib wrapper
   const rawRows = [];
   for (let y = 0; y < size; y++) {
-    rawRows.push(0); // filter byte: None
+    rawRows.push(0);
     for (let x = 0; x < size; x++) {
-      // Gradient cube icon: teal to purple
       const t = x / size;
       const r = Math.floor(40 + t * 100);
       const g = Math.floor(180 - t * 80);
@@ -88,4 +92,4 @@ function createPNG(size) {
   }
 });
 
-console.log('Build complete!');
+bundleViewer().then(() => console.log('Build complete!'));
