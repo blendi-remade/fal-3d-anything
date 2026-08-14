@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "3D Web - Image to 3D",
-  "description": "Right-click any image to transform it into an interactive 3D model using Hunyuan 3D v3.1",
+  "description": "Right-click any image to transform it into an interactive 3D model using Meshy V7",
   "version": "1.0.0",
   "permissions": [
     "activeTab",

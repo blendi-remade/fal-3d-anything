@@ -54,7 +54,7 @@ Then load the extension in Chrome:
 
 ## Powered by
 
-3D generation is handled by [Hunyuan 3D v3.1](https://fal.ai/models/fal-ai/hunyuan-3d/v3.1/pro/image-to-3d) running on [fal.ai](https://fal.ai) - fast inference for generative media models.
+3D generation is handled by [Meshy V7](https://fal.ai/models/meshy/v7/image-to-3d) running on [fal.ai](https://fal.ai) - fast inference for generative media models.
 
 ## License
 

@@ -1,8 +1,7 @@
 // 3D Web — Background Service Worker
-// Handles context menu, fal.ai Hunyuan 3D queue API, and message routing
+// Handles context menu, fal.ai Meshy V7 queue API, and message routing
 
-const FAL_ENDPOINT = 'fal-ai/hunyuan-3d/v3.1/pro/image-to-3d';
-const FAL_RUN_URL = `https://fal.run/${FAL_ENDPOINT}`;
+const FAL_ENDPOINT = 'meshy/v7/image-to-3d';
 const FAL_QUEUE_URL = `https://queue.fal.run/${FAL_ENDPOINT}`;
 const POLL_INTERVAL = 4000; // 4 seconds between status checks
 
@@ -121,15 +120,9 @@ async function startGeneration(selectedImage) {
       imageInput = selectedImage.url;
     }
 
-    // First try synchronous fal.run endpoint
-    // If it times out or fails, fall back to queue-based approach
-    let result;
-    try {
-      result = await callFalSync(apiKey, imageInput);
-    } catch (syncErr) {
-      console.warn('Sync call failed, trying queue:', syncErr.message);
-      result = await callFalQueue(apiKey, imageInput, selectedImage);
-    }
+    // Always use the queue endpoint — ultra-mode generations take minutes,
+    // far longer than a synchronous fal.run connection survives
+    const result = await callFalQueue(apiKey, imageInput, selectedImage);
 
     const glbUrl = result.model_glb?.url || result.model_urls?.glb?.url;
     const thumbnailUrl = result.thumbnail?.url;
@@ -173,32 +166,7 @@ async function startGeneration(selectedImage) {
   }
 }
 
-// Synchronous call — blocks until result is ready
-async function callFalSync(apiKey, imageInput) {
-  const response = await fetch(FAL_RUN_URL, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Key ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      input_image_url: imageInput,
-      generate_type: 'Normal',
-      face_count: 500000,
-      enable_pbr: true,
-    }),
-  });
-
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    const msg = err.detail?.[0]?.msg || err.detail || err.message || `API error ${response.status}`;
-    throw new Error(msg);
-  }
-
-  return await response.json();
-}
-
-// Queue-based fallback — submit, poll status, fetch result
+// Queue-based generation — submit, poll status, fetch result
 async function callFalQueue(apiKey, imageInput, selectedImage) {
   const submitResponse = await fetch(FAL_QUEUE_URL, {
     method: 'POST',
@@ -207,10 +175,10 @@ async function callFalQueue(apiKey, imageInput, selectedImage) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      input_image_url: imageInput,
-      generate_type: 'Normal',
-      face_count: 500000,
+      image_url: imageInput,
       enable_pbr: true,
+      target_polycount: 100000,
+      ultra_mode: true,
     }),
   });
 

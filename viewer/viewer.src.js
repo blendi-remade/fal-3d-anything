@@ -67,7 +67,7 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true,
   powerPreference: 'high-performance',
 });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.05;
@@ -853,7 +853,7 @@ function showMuseumPlacard() {
   } else {
     placardTitle.textContent = '3D Model';
   }
-  placardSubtitle.textContent = 'Generated with Hunyuan 3D v3.1';
+  placardSubtitle.textContent = 'Generated with Meshy V7';
 
   // Fade in after camera entry completes
   setTimeout(() => {
